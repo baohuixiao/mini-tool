@@ -1,0 +1,3 @@
+<page-state state="{{pageState}}" is-reserve-top-title="{{false}}" bindonRetry="onRetry" />
+<navigation title="宝宝巴士" show-back="{{false}}" background="#fff" />
+<view class="container"></view>
