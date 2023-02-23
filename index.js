@@ -28,7 +28,6 @@ inquirer.prompt([
     },
   }
 ]).then(answers => {
-  console.log(answers);
 
   const dirPath = path.join(process.cwd(), answers.dirName);
 
@@ -91,12 +90,7 @@ inquirer.prompt([
   fs.mkdirSync(dirPath);
   const __dirname = path.dirname(fileURLToPath(import.meta.url));
   // 将文件夹中的指定文件复制到另一个文件夹中,遍历文件夹中的所有文件
-  fs.readdirSync(path.join(__dirname, `./template/${answers.operation}`)).forEach(fileName => {
-    fs.copyFileSync(
-      path.join(path.join(__dirname, `./template/${answers.operation}`), fileName),
-      path.join(dirPath, fileName)
-    );
-  });
+  copyFile(path.join(__dirname, `./template/${answers.operation}`), dirPath);
 
 })
 
@@ -105,4 +99,14 @@ function createPageInMainPackage(appJson, currentDir, dirName) {
   const url = `${process.cwd().split(currentDir)[1]}/${dirName}/index`;
   appJson.pages.push(url);
   fs.writeFileSync(path.join(currentDir, 'app.json'), JSON.stringify(appJson, null, 2));
+}
+
+// 从一个文件夹复制文件到另一个文件夹
+function copyFile(fromPath, toPath) {
+    fs.readdirSync(fromPath).forEach(fileName => {
+    fs.copyFileSync(
+      path.join(fromPath, fileName),
+      path.join(toPath, fileName)
+    );
+  });
 }
