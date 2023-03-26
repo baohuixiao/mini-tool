@@ -63,7 +63,7 @@ inquirer.prompt([
         // 在分包中
         console.log('在分包中');
         const currentDirInSubPackage = subpackages.find(item => process.cwd().indexOf(item) > -1);
-        const url = `${process.cwd().split(currentDirInSubPackage)[1]}/${answers.dirName}/index`;
+        const url = `${process.cwd().split(currentDirInSubPackage)[1].replace(/^\//, '')}/${answers.dirName}/index`;
         console.log(url);
         // 在app.json中的分包中添加页面
         appJson.subpackages[currentDirInSubPackageIndex].pages.push(url);
@@ -96,14 +96,14 @@ inquirer.prompt([
 
 // 在主包中创建页面
 function createPageInMainPackage(appJson, currentDir, dirName) {
-  const url = `${process.cwd().split(currentDir)[1]}/${dirName}/index`;
+  const url = `${process.cwd().split(currentDir)[1].replace(/^\//, '')}/${dirName}/index`;
   appJson.pages.push(url);
   fs.writeFileSync(path.join(currentDir, 'app.json'), JSON.stringify(appJson, null, 2));
 }
 
 // 从一个文件夹复制文件到另一个文件夹
 function copyFile(fromPath, toPath) {
-    fs.readdirSync(fromPath).forEach(fileName => {
+  fs.readdirSync(fromPath).forEach(fileName => {
     fs.copyFileSync(
       path.join(fromPath, fileName),
       path.join(toPath, fileName)
